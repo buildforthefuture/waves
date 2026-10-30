@@ -1,0 +1,16 @@
+# Known package licenses and the allowed set. Map a package here before
+# introducing it as a dependency; unmapped dependencies fail the check.
+allowed:
+  - MIT
+  - Apache-2.0
+  - BSD-2-Clause
+  - BSD-3-Clause
+  - ISC
+  - 0BSD
+  - Unlicense
+  - PSF-2.0
+  - Zlib
+packages:
+  PyYAML: MIT
+  ruff: MIT
+  mypy: MIT

@@ -1,0 +1,15 @@
+# Documented exceptions for the scanners. Every entry needs a reason.
+# An entry without allow_rules (secrets) or allow_terms (neutrality)
+# exempts the whole path; with them, only the listed rules or patterns
+# are exempt in that path. Use sparingly: authorship, tooling, and
+# provenance statements are never exempt.
+secrets:
+  - path: "tools/scan_secrets.py"
+    reason: "Contains the scanner's own detection patterns."
+  - path: "tools/tests/test_scanners.py"
+    reason: "Holds planted example credentials used to test the scanner."
+neutrality:
+  - path: "tools/neutrality-terms.yaml"
+    reason: "Contains the scanner's own detection patterns."
+  - path: "tools/tests/test_scanners.py"
+    reason: "Holds planted examples that verify the scanner reports findings."

@@ -1,0 +1,53 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "projects/**"
+      - "catalog/**"
+      - "registry/**"
+      - "tools/**"
+      - ".github/**"
+      - "CATALOG.md"
+      - "README.md"
+  pull_request:
+    paths:
+      - "projects/**"
+      - "catalog/**"
+      - "registry/**"
+      - "tools/**"
+      - ".github/**"
+      - "CATALOG.md"
+      - "README.md"
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install tool dependencies
+        run: pip install -r tools/requirements.txt
+      - name: Tool self-tests
+        run: python -m unittest discover -s tools/tests -t tools -v
+      - name: Rebuild catalog and confirm no drift
+        run: |
+          python tools/build_indexes.py
+          git diff --exit-code -- catalog CATALOG.md README.md
+      - name: Validate projects and catalog
+        run: python tools/validate_indexes.py
+      - name: Secret scan
+        run: python tools/scan_secrets.py
+      - name: Neutrality scan
+        run: python tools/scan_neutrality.py
+      - name: Link check
+        run: python tools/check_links.py
+      - name: Markdown lint
+        run: python tools/lint_markdown.py
+      - name: License check
+        run: python tools/check_licenses.py
+      - name: Project test suites
+        run: python tools/run_project_tests.py

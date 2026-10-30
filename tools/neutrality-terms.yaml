@@ -1,0 +1,34 @@
+# Detection patterns for the neutrality scanner. This file is on the
+# scanner allowlist because it necessarily contains the patterns.
+#
+# content_terms run against file contents, commit messages, and tag names.
+# filename_terms additionally run against repository path strings.
+# All patterns are matched case-insensitively.
+content_terms:
+  - '\bai\b'
+  - '\bllms?\b'
+  - '\bgpts?\b'
+  - '\bclaude\b'
+  - '\banthropic\b'
+  - '\bopenai\b'
+  - '\bcopilot\b'
+  - '\bgemini\b'
+  - '\bchatgpt\b'
+  - '\bagents?\b'
+  - '\bassistants?\b'
+  - '\bprompts?\b'
+  - '\bswarms?\b'
+  - '\bz\.ai\b'
+  - 'generated\s+by'
+  - 'auto-?generated'
+  - '[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+'
+  - '(^|[^A-Za-z0-9])/(home|Users|root|tmp|var)/'
+  - '\blocalhost\b'
+  - '\b127\.0\.0\.1\b'
+  - '\b(10|192\.168)\.[0-9]+\.[0-9]+\.[0-9]+\b'
+  - '\b[a-z0-9-]+\.internal\b'
+filename_terms:
+  - '(^|/)\.env'
+  - '(^|/)\.(claude|cursor|aider|continue|windsurf|codeium|cody)(\.|$)'
+# Handles tied to the repository owner, listed here once known.
+owner_handles: []

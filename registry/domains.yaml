@@ -1,0 +1,83 @@
+# Domain taxonomy with usage counters.
+# Sampling for new work weights each domain inversely to its counter, so
+# less-used domains surface more often. Counters are maintained by the
+# bookkeeping helpers; do not edit them by hand.
+domains:
+  - name: software
+    display: General software
+    count: 0
+  - name: systems
+    display: Systems and kernels
+    count: 0
+  - name: ml-tooling
+    display: Machine learning tooling
+    count: 0
+  - name: developer-tools
+    display: Developer tools
+    count: 0
+  - name: data-engineering
+    display: Data engineering
+    count: 0
+  - name: security-tooling
+    display: Security tooling
+    count: 0
+  - name: embedded-iot
+    display: Embedded systems and IoT
+    count: 0
+  - name: robotics
+    display: Robotics software
+    count: 0
+  - name: networking
+    display: Networking
+    count: 0
+  - name: compilers-languages
+    display: Compilers and languages
+    count: 0
+  - name: scientific-computing
+    display: Scientific computing
+    count: 0
+  - name: fintech-infra
+    display: Financial technology infrastructure
+    count: 0
+  - name: healthtech-infra
+    display: Health technology infrastructure
+    count: 0
+  - name: game-engines
+    display: Game engines
+    count: 0
+  - name: hardware-adjacent
+    display: Hardware-adjacent software
+    count: 0
+  - name: cli-utilities
+    display: Command line utilities
+    count: 0
+  - name: libraries
+    display: Libraries
+    count: 0
+  - name: platforms
+    display: Platforms
+    count: 0
+  - name: protocols
+    display: Protocols
+    count: 0
+  - name: observability
+    display: Observability
+    count: 0
+  - name: storage-infra
+    display: Storage infrastructure
+    count: 0
+  - name: web-infra
+    display: Web infrastructure
+    count: 0
+  - name: testing-tooling
+    display: Testing tooling
+    count: 0
+  - name: graphics-imaging
+    display: Graphics and imaging
+    count: 0
+  - name: media-processing
+    display: Media processing
+    count: 0
+  - name: distributed-systems
+    display: Distributed systems
+    count: 0

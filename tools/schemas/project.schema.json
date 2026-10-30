@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Project manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "slug",
+    "title",
+    "summary",
+    "domain",
+    "tags",
+    "stack",
+    "status",
+    "version",
+    "created_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{8}$",
+      "description": "Eight-character Crockford base32 suffix of a ULID."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "maxLength": 48
+    },
+    "title": { "type": "string", "minLength": 3, "maxLength": 80 },
+    "summary": { "type": "string", "minLength": 10, "maxLength": 200 },
+    "domain": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "tags": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+        "maxLength": 24
+      }
+    },
+    "stack": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": { "type": "string", "maxLength": 32 }
+    },
+    "status": { "enum": ["draft", "active", "archived"] },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "created_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "commands": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "build": { "type": "string" },
+        "test": { "type": "string" }
+      }
+    }
+  }
+}
