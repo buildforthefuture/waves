@@ -67,6 +67,12 @@ class BuildIndexes(unittest.TestCase):
         self.assertIn("# Incubator", text)
         self.assertIn("Total projects: 1", text)
 
+    def test_catalog_links_are_repository_relative(self):
+        build_indexes.build(self.root)
+        text = (self.root / "CATALOG.md").read_text(encoding="utf-8")
+        self.assertIn("(catalog/by-domain/libraries.md)", text)
+        self.assertTrue((self.root / "catalog" / "by-domain" / "libraries.md").exists())
+
     def test_rebuild_is_deterministic(self):
         build_indexes.build(self.root)
         first = (

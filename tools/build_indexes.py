@@ -126,7 +126,8 @@ def write_catalog(root: Path, projects: list[dict], displays: dict[str, str]) ->
         lines += ["", "## By domain", "", "| Domain | Projects |", "| --- | --- |"]
         for domain in sorted(counts, key=lambda d: (-counts[d], d)):
             lines.append(
-                f"| [{displays.get(domain, domain)}](by-domain/{domain}.md) | {counts[domain]} |"
+                f"| [{displays.get(domain, domain)}]"
+                f"(catalog/by-domain/{domain}.md) | {counts[domain]} |"
             )
         months: dict[str, int] = {}
         for project in projects:
@@ -134,7 +135,7 @@ def write_catalog(root: Path, projects: list[dict], displays: dict[str, str]) ->
             months[month] = months.get(month, 0) + 1
         lines += ["", "## By month", ""]
         for month in sorted(months, reverse=True):
-            lines.append(f"- [{month}](by-year/{month}.md) ({months[month]})")
+            lines.append(f"- [{month}](catalog/by-year/{month}.md) ({months[month]})")
     (root / "CATALOG.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
