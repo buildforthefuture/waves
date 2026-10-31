@@ -5,7 +5,7 @@
 domains:
   - name: software
     display: General software
-    count: 0
+    count: 1
   - name: systems
     display: Systems and kernels
     count: 0
