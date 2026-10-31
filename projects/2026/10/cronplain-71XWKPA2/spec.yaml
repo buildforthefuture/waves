@@ -1,0 +1,169 @@
+title: Cronplain
+slug: cronplain
+domain: software
+tags:
+  - cron
+  - scheduling
+  - parser
+  - cli
+  - time
+summary: >-
+  Parse, validate, describe, and iterate standard five-field cron
+  expressions using only the Python standard library.
+problem: >-
+  Cron expressions appear in job runners, CI platforms, and cloud
+  schedulers, yet they remain hard to read and easy to get wrong. The
+  existing Python options split the work: scheduling runners compute times
+  without explaining them, description libraries carry dependencies and
+  cannot compute runs, and shell validators give terse errors that hide
+  which field is wrong.
+users:
+  - Developers embedding cron schedules in applications and dashboards
+  - Operators reviewing crontabs and scheduler configuration
+  - Authors of CI and deployment tooling that accepts schedule input
+goals:
+  - Parse standard five-field expressions with lists, ranges, steps, names, and aliases
+  - Explain any accepted schedule as deterministic plain English
+  - Compute next and previous runs over the wall-clock calendar
+  - Report precisely which field is wrong and why
+  - Run anywhere Python runs, with no third-party runtime packages
+non_goals:
+  - Quartz-style six-field and year-field expressions
+  - Timezone conversion or daylight-saving-aware scheduling
+  - The @reboot alias and per-user crontab file handling
+  - Localization of descriptions beyond English
+requirements:
+  - id: FR-1
+    title: Field grammar
+    priority: MUST
+    description: >-
+      Parse standard five-field expressions using lists, ranges, steps,
+      wildcards, numeric values, and three-letter month and weekday names.
+    acceptance:
+      - "*/15 0,12 1-7 JAN * parses to the expected minute, hour, day, and month values"
+      - each parsed field exposes its sorted value set for inspection
+  - id: FR-2
+    title: Time-based aliases
+    priority: MUST
+    description: >-
+      Support the seven time-based @aliases and reject @reboot with a clear
+      explanation.
+    acceptance:
+      - "@yearly, @annually, @monthly, @weekly, @daily, @midnight, and @hourly expand to their standard equivalents"
+      - "@reboot is rejected with a message explaining it is not time-based"
+  - id: FR-3
+    title: Precise validation errors
+    priority: MUST
+    description: >-
+      Reject malformed or out-of-range fields with an error that names the
+      field and the offending input.
+    acceptance:
+      - minute 60, weekday 8, and month FOO each produce an error naming the field
+      - expressions with the wrong number of fields are rejected with guidance
+  - id: FR-4
+    title: Weekday normalization
+    priority: MUST
+    description: >-
+      Treat 0 and 7 in the weekday field as Sunday and accept three-letter
+      names case-insensitively.
+    acceptance:
+      - 0 0 * * 0 and 0 0 * * 7 produce identical schedules
+      - 0 0 * * sun matches the same times as 0 0 * * 0
+  - id: FR-5
+    title: Day selection rule
+    priority: MUST
+    description: >-
+      Apply the standard rule for combining day-of-month and day-of-week:
+      either field may decide the day when both are restricted, and a
+      field that starts with an asterisk combines with the other by
+      intersection.
+    acceptance:
+      - 0 0 1 * 1 fires on the 1st of the month or on any Monday
+      - 0 0 */5 * 1 fires only on Mondays that are also every 5th day of the month
+      - 0 0 * * 1 fires only on Mondays when day-of-month is unrestricted
+  - id: FR-6
+    title: Next-run computation
+    priority: MUST
+    description: >-
+      Compute the next matching wall-clock time strictly after a given
+      naive datetime, skipping dates the calendar does not have, and fail
+      clearly for schedules that can never match.
+    acceptance:
+      - 0 0 31 * * from the start of February returns the last day of March
+      - 0 0 29 2 * matches the next leap years, and 0 0 31 2 * reports that the schedule never matches
+  - id: FR-7
+    title: Previous-run computation
+    priority: MUST
+    description: >-
+      Compute the previous matching wall-clock time strictly before a
+      given naive datetime, with the same calendar handling in reverse.
+    acceptance:
+      - "@hourly before 14:30:30 returns 14:00, and before exactly 14:00 returns 13:00"
+      - 0 0 1 * * before the 1st returns the 1st of the previous month
+  - id: FR-8
+    title: Plain-English description
+    priority: MUST
+    description: >-
+      Produce a deterministic plain-English description of any accepted
+      expression, stating the either-or day rule explicitly when it applies.
+    acceptance:
+      - "*/15 * * * * describes as Every 15 minutes"
+      - 0 9 * * 1-5 mentions 09:00 and Monday through Friday
+      - 0 0 1 * 1 states that the 1st of the month or a Monday both qualify
+  - id: FR-9
+    title: Command-line interface
+    priority: MUST
+    description: >-
+      Expose describe, validate, next, and prev subcommands with non-zero
+      exit status for invalid input.
+    acceptance:
+      - next with a count prints that many ISO timestamps
+      - an invalid expression exits with status 1 and an error on standard error
+  - id: NFR-1
+    title: Zero runtime dependencies
+    priority: MUST
+    description: Run on the Python standard library alone.
+    acceptance:
+      - the package imports and its whole suite passes on a clean interpreter
+  - id: NFR-2
+    title: Safe parsing
+    priority: MUST
+    description: >-
+      Parsing untrusted input only ever raises the library error type,
+      never an unrelated exception, and never recurses or loops unboundedly.
+    acceptance:
+      - a corpus of malformed strings raises only the library error type
+  - id: NFR-3
+    title: Responsive computation
+    priority: SHOULD
+    description: >-
+      Answer parse and next-run queries quickly, including schedules whose
+      matches are years apart.
+    acceptance:
+      - one thousand parses complete in under a second
+      - the next February 29 across an eight-year span resolves in under a second
+stack:
+  language: Python
+  runtime: CPython 3.10+
+  build: setuptools via pyproject.toml
+  test: python3 -m unittest discover
+  lint: ruff check
+  typecheck: mypy
+test_strategy: >-
+  Unit tests cover field grammar, alias expansion, day selection, and every
+  documented error path. Iteration tests assert exact next and previous
+  datetimes around month lengths, leap years, weekends, and the either-or
+  day rule, plus termination for schedules that never match. Description
+  tests pin golden strings, and CLI tests drive the entry point in process
+  while checking exit codes. Every MUST requirement identifier appears in
+  at least one test docstring.
+security_notes: >-
+  Parsing accepts untrusted strings: input is never evaluated, all
+  malformed shapes surface as the library error type, and iteration is
+  bounded so no expression can cause unbounded work. The command-line
+  interface reads only its arguments and prints only computed text.
+roadmap:
+  - Optional six-field Quartz-style expressions with a year field
+  - Optional timezone-aware iteration built on zoneinfo
+  - Localization hooks for descriptions
+  - Whole-line crontab file parsing
