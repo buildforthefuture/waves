@@ -8,8 +8,9 @@ domain, tag, and date.
 
 ## Catalog
 
-- Total projects: 0
-- Domains covered: 0
+- Total projects: 1
+- Domains covered: 1
+- Latest addition: [Cronplain](projects/2026/10/cronplain-71XWKPA2/README.md) (2026-10)
 
 Browse:
 
@@ -21,11 +22,15 @@ Browse:
 
 ## Domains
 
-No projects yet.
+| Domain | Projects |
+| --- | --- |
+| [General software](catalog/by-domain/software.md) | 1 |
 
 ## Recent projects
 
-No projects yet.
+| Project | Domain | Added |
+| --- | --- | --- |
+| [Cronplain](projects/2026/10/cronplain-71XWKPA2/README.md) | software | 2026-10 |
 
 ## Layout
 
