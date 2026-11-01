@@ -8,9 +8,9 @@ domain, tag, and date.
 
 ## Catalog
 
-- Total projects: 1
-- Domains covered: 1
-- Latest addition: [Cronplain](projects/2026/10/cronplain-71XWKPA2/README.md) (2026-10)
+- Total projects: 2
+- Domains covered: 2
+- Latest addition: [Ledgerpost](projects/2026/11/ledgerpost-PM3KQEGS/README.md) (2026-11)
 
 Browse:
 
@@ -24,12 +24,14 @@ Browse:
 
 | Domain | Projects |
 | --- | --- |
+| [Financial technology infrastructure](catalog/by-domain/fintech-infra.md) | 1 |
 | [General software](catalog/by-domain/software.md) | 1 |
 
 ## Recent projects
 
 | Project | Domain | Added |
 | --- | --- | --- |
+| [Ledgerpost](projects/2026/11/ledgerpost-PM3KQEGS/README.md) | fintech-infra | 2026-11 |
 | [Cronplain](projects/2026/10/cronplain-71XWKPA2/README.md) | software | 2026-10 |
 
 ## Layout
