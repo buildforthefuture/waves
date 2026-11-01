@@ -38,7 +38,7 @@ domains:
     count: 0
   - name: fintech-infra
     display: Financial technology infrastructure
-    count: 0
+    count: 1
   - name: healthtech-infra
     display: Health technology infrastructure
     count: 0
